@@ -1,0 +1,425 @@
+﻿@*@page "/zawodnik"*@
+@model aplikacja_towam.Pages.zawodnikModel;
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div class="namesurname" style="text-align:center ">
+    <h1>Dziennik Aktywności </h1>
+</div>
+
+<div class="namesurname" style="text-align:center">
+    <h3>Test coopera</h3>
+    <form asp-page-handler="cooper" method="post">
+        <h3 id="as"> Dystans (km)</h3>
+        <input type="number" name="dystanscooper" style="margin-top:5px;margin-bottom:8px" /><br />
+        @*<input type="date" id="start" name="trip-start" value=@ViewData["aktualna"]> <br />*@
+        <input type="submit" class="myButtonn" value="wgraj dane" /><br />
+    </form>
+
+
+    <div id="dashboard_div_cooper">
+        <div id="line_chart1_cooper"></div>
+        <div id="line_chart2_cooper"></div>
+        <div id="control_div_cooper"></div>
+    </div>
+
+
+    <script>
+
+        var chart_test_data = [
+            // ["Date", "registrations"],
+            ["2022-8", 1094, 2094],
+            ["2022-9", 86251, 36251],
+            ["2022-10", 76579, 66579],
+            ["2022-11", 75670, 35670],
+            ["2022-12", 68921, 18921],
+            ["2022-13", 60597, 50597],
+            ["2022-14", 65470, 45470],
+            ["2022-15", 65873, 35873],
+            ["2022-16", 71606, 41606],
+            ["2022-17", 83908, 23908],
+            ["2022-18", 68889, 58889],
+            ["2022-19", 72622, 42622],
+            ["2022-20", 66980, 36980],
+            ["2022-21", 60075, 20075],
+            ["2022-22", 73745, 63745]
+        ];
+
+        function drawDashboard() {
+            // need to massage chart1_test_data coming from php, so we can have a Date obj, instead of string date
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'Date');
+            data.addColumn('number', 'Maksymalne wartości');
+            data.addColumn('number', 'Średnie wartości');
+
+            for (var i = 0; i < chart_test_data.length; i++) {
+                var tmpArray = chart_test_data[i][0].split("-");
+
+                var date = new Date(parseInt(tmpArray[0]), 0, parseInt(tmpArray[1]));
+                data.addRow([date, parseInt(chart_test_data[i][1]), parseInt(chart_test_data[i][2])]);
+            }
+
+            // Create a dashboard.
+            var myDashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div_cooper'));
+
+            // Create a date range slider
+            var myDateSlider = new google.visualization.ControlWrapper({
+                'controlType': 'ChartRangeFilter',
+                'containerId': 'control_div_cooper',
+                'options': {
+                    // Filter by the date axis.
+                    'filterColumnLabel': 'Date',
+                    'ui': {
+                        'chartOptions': {
+                            'height': 60,
+                        },
+                    }
+                },
+            });
+
+            // Line chart 1 that is hooked up to ChartRangeFilter control
+            var lineChart1 = new google.visualization.ChartWrapper({
+                chartType: 'LineChart',
+                containerId: 'line_chart1_cooper',
+                options: {
+
+                },
+                view: {
+                    columns: [0, 1] // use columns 0 and 1
+                }
+            });
+
+            // Line chart 2 that I would like to also hook up to ChartRangeFilter control
+            var lineChart2 = new google.visualization.ChartWrapper({
+                chartType: 'LineChart',
+                containerId: 'line_chart2_cooper',
+                options: {
+
+                },
+                view: {
+                    columns: [0, 2] // use columns 0 and 2
+                }
+            });
+
+            // Bind lineChart1 to the dashboard, and to the controls
+            myDashboard.bind(myDateSlider, [lineChart1, lineChart2]).draw(data);
+        }
+        google.load('visualization', '1', { packages: ['controls'], callback: drawDashboard });
+    </script>
+@*    <div>
+        <br />
+        <div>
+             <h4>@ViewData["CooperStatystyki"]</h4>
+        </div>
+        
+    </div>*@
+
+</div>
+@*
+
+<div class="namesurname" style="text-align:center">
+    <h3>Wyciskanie sztanki (max kg)</h3>
+    <form asp-page-handler="sztangamax" method="post" asp-antiforgery="true">
+        <h3> Max kg</h3>
+        <input type="number" name="maxkg" style="margin-top:5px" /> <br />
+        <input type="date" id="start" name="trip-start" value=@ViewData["aktualna"] style="margin-top:6px"> <br />
+        <input type="submit" class="myButtonn" value="wgraj dane" />
+    </form>
+
+    <div id="dashboard_div">
+        <div id="line_chart1"></div>
+        <div id="line_chart2"></div>
+        <div id="control_div"></div>
+    </div>
+
+    <script>
+
+        var chart_test_data = [
+            // ["Date", "registrations"],
+            ["2014-8", 1094, 2094],
+            ["2014-9", 86251, 36251],
+            ["2014-10", 76579, 66579],
+            ["2014-11", 75670, 35670],
+            ["2014-12", 68921, 18921],
+            ["2014-13", 60597, 50597],
+            ["2014-14", 65470, 45470],
+            ["2014-15", 65873, 35873],
+            ["2014-16", 71606, 41606],
+            ["2014-17", 83908, 23908],
+            ["2014-18", 68889, 58889],
+            ["2014-19", 72622, 42622],
+            ["2014-20", 66980, 36980],
+            ["2014-21", 60075, 20075],
+            ["2014-22", 73745, 63745]
+        ];
+
+        function drawDashboard() {
+            // need to massage chart1_test_data coming from php, so we can have a Date obj, instead of string date
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'Date');
+            data.addColumn('number', 'registrations');
+            data.addColumn('number', 'registrations');
+
+            for (var i = 0; i < chart_test_data.length; i++) {
+                var tmpArray = chart_test_data[i][0].split("-");
+
+                var date = new Date(parseInt(tmpArray[0]), 0, parseInt(tmpArray[1]));
+                data.addRow([date, parseInt(chart_test_data[i][1]), parseInt(chart_test_data[i][2])]);
+            }
+
+            // Create a dashboard.
+            var myDashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+
+            // Create a date range slider
+            var myDateSlider = new google.visualization.ControlWrapper({
+                'controlType': 'ChartRangeFilter',
+                'containerId': 'control_div',
+                'options': {
+                    // Filter by the date axis.
+                    'filterColumnLabel': 'Date',
+                    'ui': {
+                        'chartOptions': {
+                            'height': 60,
+                        },
+                    }
+                },
+                'state': {
+                    'range': {
+                        'start': new Date(2014, 0, 10),
+                        'end': new Date(2014, 0, 20)
+                    }
+                }
+            });
+
+            // Line chart 1 that is hooked up to ChartRangeFilter control
+            var lineChart1 = new google.visualization.ChartWrapper({
+                chartType: 'LineChart',
+                containerId: 'line_chart1',
+                options: {
+
+                },
+                view: {
+                    columns: [0, 1] // use columns 0 and 1
+                }
+            });
+
+            // Line chart 2 that I would like to also hook up to ChartRangeFilter control
+            var lineChart2 = new google.visualization.ChartWrapper({
+                chartType: 'LineChart',
+                containerId: 'line_chart2',
+                options: {
+
+                },
+                view: {
+                    columns: [0, 2] // use columns 0 and 2
+                }
+            });
+
+            // Bind lineChart1 to the dashboard, and to the controls
+            myDashboard.bind(myDateSlider, [lineChart1, lineChart2]).draw(data);
+        }
+        google.load('visualization', '1', { packages: ['controls'], callback: drawDashboard });
+    </script>
+    <br/>
+    <div>
+        <h4>@ViewData["SztangaStatystyki"]</h4>
+    </div>
+    
+</div>
+
+
+<div class="namesurname" style="text-align:center">
+    <h3>Strzały (celność)</h3>
+    <form asp-page-handler="strzaly" method="post" asp-antiforgery="true">
+        <h3> Rezultat</h3>
+        <input type="number" name="procentstrzalow" style="margin-top:5px" />    <br />
+        <input type="date" id="start" name="trip-start" value=@ViewData["aktualna"] style="margin-top:6px"> <br />
+        <input type="submit" class="myButtonn" value="wgraj dane" />
+    </form>
+    
+    <div id="dashboard_div">
+        <div id="line_chart1"></div>
+        <div id="line_chart2"></div>
+        <div id="control_div"></div>
+    </div>
+
+
+    <script>
+
+        var chart_test_data = [
+            // ["Date", "registrations"],
+            ["2014-8", 1094, 2094],
+            ["2014-9", 86251, 36251],
+            ["2014-10", 76579, 66579],
+            ["2014-11", 75670, 35670],
+            ["2014-12", 68921, 18921],
+            ["2014-13", 60597, 50597],
+            ["2014-14", 65470, 45470],
+            ["2014-15", 65873, 35873],
+            ["2014-16", 71606, 41606],
+            ["2014-17", 83908, 23908],
+            ["2014-18", 68889, 58889],
+            ["2014-19", 72622, 42622],
+            ["2014-20", 66980, 36980],
+            ["2014-21", 60075, 20075],
+            ["2014-22", 73745, 63745]
+        ];
+
+        function drawDashboard() {
+            // need to massage chart1_test_data coming from php, so we can have a Date obj, instead of string date
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'Date');
+            data.addColumn('number', 'registrations');
+            data.addColumn('number', 'registrations');
+
+            for (var i = 0; i < chart_test_data.length; i++) {
+                var tmpArray = chart_test_data[i][0].split("-");
+
+                var date = new Date(parseInt(tmpArray[0]), 0, parseInt(tmpArray[1]));
+                data.addRow([date, parseInt(chart_test_data[i][1]), parseInt(chart_test_data[i][2])]);
+            }
+
+            // Create a dashboard.
+            var myDashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+
+            // Create a date range slider
+            var myDateSlider = new google.visualization.ControlWrapper({
+                'controlType': 'ChartRangeFilter',
+                'containerId': 'control_div',
+                'options': {
+                    // Filter by the date axis.
+                    'filterColumnLabel': 'Date',
+                    'ui': {
+                        'chartOptions': {
+                            'height': 60,
+                        },
+                    }
+                },
+                'state': {
+                    'range': {
+                        'start': new Date(2014, 0, 10),
+                        'end': new Date(2014, 0, 20)
+                    }
+                }
+            });
+
+            // Line chart 1 that is hooked up to ChartRangeFilter control
+            var lineChart1 = new google.visualization.ChartWrapper({
+                chartType: 'LineChart',
+                containerId: 'line_chart1',
+                options: {
+
+                },
+                view: {
+                    columns: [0, 1] // use columns 0 and 1
+                }
+            });
+
+            // Line chart 2 that I would like to also hook up to ChartRangeFilter control
+            var lineChart2 = new google.visualization.ChartWrapper({
+                chartType: 'LineChart',
+                containerId: 'line_chart2',
+                options: {
+
+                },
+                view: {
+                    columns: [0, 2] // use columns 0 and 2
+                }
+            });
+
+            // Bind lineChart1 to the dashboard, and to the controls
+            myDashboard.bind(myDateSlider, [lineChart1, lineChart2]).draw(data);
+        }
+        google.load('visualization', '1', { packages: ['controls'], callback: drawDashboard });
+    </script>
+    <br/>
+    <div>
+        <h4>@ViewData["StrzalyStatystyki"]</h4>
+    </div>
+    
+</div>
+
+
+<div class="namesurname" style="text-align:center">
+    <form asp-page-handler="sztangamaxile" method="post" asp-antiforgery="true">
+        <h3>Wyciskanie sztangi (max ile)</h3>
+        <h3> Wyciskanie sztangi</h3>
+        <h3> Max ilosc</h3>
+        <input type="number" name="maxilekg" style="margin-top:5px" />
+        <h3 style="margin-top:7px">Max waga</h3>
+        <input type="number" name="maxwagakg" style="margin-top:5px" /> <br />
+        <input type="date" id="start" name="trip-start" value=@ViewData["aktualna"] style="margin-top:10px;margin-bottom:6px"> <br />
+        <input type="submit" class="myButtonn" value="wgraj dane" />
+    </form>
+    <br />
+    @foreach (var item in Model.wyciskanieMaxIlosc)
+    {
+        <h4>Waga: @item.ilosc [kg]   Ilośc: @item.wartosc   Data: @item.data.Date </h4>
+    }
+</div>
+
+
+<div class="namesurname" style="text-align:center">
+    <form asp-page-handler="podania" method="post" asp-antiforgery="true">
+        <h3>Podanie (celność)</h3>
+        <h3>Rezultat</h3>
+        <input type="number" name="procentpodan" style="margin-top:5px" /><br />
+        <input type="date" id="start" name="trip-start" value=@ViewData["aktualna"] style="margin-top:6px"> <br />
+        <input type="submit" class="myButtonn" value="wgraj dane" />
+
+    </form>
+    <div id="dashboard_div">
+        <div id="line_chart1"></div>
+        <div id="control_div"></div>
+    </div>
+
+    <script>
+    function drawDashboard() {
+        var data = google.visualization.arrayToDataTable([
+    ['Time', 'Data'],
+@foreach (var data in Model.podania) {
+<text>[new Date('@data.data.Year-@data.data.Month-@data.data.Day'), @data.wartosc],</text>
+}
+]);
+        var myDashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+
+                // Create a date range slider
+                var myDateSlider = new google.visualization.ControlWrapper({
+            'controlType': 'ChartRangeFilter',
+            'containerId': 'control_div',
+            'options': {
+                    // Filter by the date axis.
+                    'filterColumnLabel': 'Time',
+                'ui': {
+                        'chartOptions': {
+                            'height': 60,
+                    },
+                }
+                },
+        });
+
+        // Line chart 1 that is hooked up to ChartRangeFilter control
+        var lineChart1 = new google.visualization.ChartWrapper({
+            chartType: 'LineChart',
+            containerId: 'line_chart1',
+            options: {
+
+            },
+            view: {
+                columns: [0, 1] // use columns 0 and 1
+    }
+        });
+
+    // Line chart 2 that I would like to also hook up to ChartRangeFilter control
+
+
+    // Bind lineChart1 to the dashboard, and to the controls
+    myDashboard.bind(myDateSlider, lineChart1).draw(data);
+    }
+google.load('visualization', '1', {packages:['controls'], callback: drawDashboard});
+    </script>
+    <br/>
+    <div>
+        <h4>@ViewData["PodaniaStatystyki"]</h4>
+    </div>
+    
+</div>*@

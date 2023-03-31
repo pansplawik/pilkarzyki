@@ -1,0 +1,188 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+.text-center {
+    background-color:white;
+    color: black;
+    border: 2px solid black;
+    margin: 20px;
+    padding: 20px;
+}
+.asd {
+    background-color: white;
+    text-align: center;
+}
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: blueviolet;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    background-color:darkgreen;
+    margin: 0;
+    margin-bottom: 60px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+    background-color: mintcream;
+}
+
+.jumbotron {
+    text-align: center;
+    background-color: #f8f398;
+}
+
+.namesurname {
+    background-color:lightgreen;
+    border: 2px solid black;
+    margin: 20px;
+    padding: 20px;
+}
+
+.trening {
+    text-align: center;
+    background-color: #fdffcd;
+    border: 2px solid black;
+    margin: 20px;
+    padding: 20px;
+}
+
+.select {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+    .select select {
+        font-family: 'Arial';
+        display: inline-block;
+        width: 100%;
+        cursor: pointer;
+        padding: 10px 15px;
+        outline: 0;
+        border: 0px solid #000000;
+        border-radius: 0px;
+        background: #e6e6e6;
+        color: #7b7b7b;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+        .select select::-ms-expand {
+            display: none;
+        }
+
+        .select select:hover,
+        .select select:focus {
+            color: #000000;
+            background: #cccccc;
+        }
+
+        .select select:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+.select_arrow {
+    position: absolute;
+    top: 16px;
+    right: 15px;
+    pointer-events: none;
+    border-style: solid;
+    border-width: 8px 5px 0px 5px;
+    border-color: #7b7b7b transparent transparent transparent;
+}
+
+.select select:hover ~ .select_arrow,
+.select select:focus ~ .select_arrow {
+    border-top-color: #000000;
+}
+
+.select select:disabled ~ .select_arrow {
+    border-top-color: #cccccc;
+}
+
+.myButtonn {
+    box-shadow: inset 0px 1px 0px 0px #caefab;
+    background: linear-gradient(to bottom, #77d42a 5%, #5cb811 100%);
+    background-color: darkgreen;
+    border-radius: 6px;
+    border: 1px solid #268a16;
+    display: inline-block;
+    cursor: pointer;
+    color: darkgreen;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #aade7c;
+    margin-top: 7px;
+}
+
+    .myButtonn:hover {
+        background: linear-gradient(to bottom, #5cb811 5%, #77d42a 100%);
+        background-color: darkgreen;
+    }
+
+    .myButtonn:active {
+        position: relative;
+        top: 1px;
+    }

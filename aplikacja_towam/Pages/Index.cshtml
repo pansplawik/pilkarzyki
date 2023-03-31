@@ -1,0 +1,35 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<div class="text-center">
+    <h1 style="text-align:center">Piłkarzyki</h1>
+    <p class="lead">Witaj, w programie do statystyk piłkarskich.</p>
+</div>
+
+<div class="text-center" style="text-align:center">
+    <h1>Statystyki zawodnika</h1>
+    <div class="namesurname" style="text-align:center">
+        <h4>Logowanie do ID</h4>
+        <form asp-page-handler="view" method="post">
+            <h4>ID</h4>
+            <input type="number" name="index" /><br />
+            <input type="submit" class="myButtonn"/>
+        </form>
+
+        
+    </div>
+    <div class="namesurname">
+        <form method="post">
+            <h4>Rejestracja</h4>
+            <h4>ID</h4>
+            <input type="number" name="index" /><br />
+            <h4>Login</h4>
+            <input type="text" name="imie" /><br />
+            <h4>Hasło</h4>
+            <input type="text" name="hasło" /><br />
+            <input type="submit" class="myButtonn"></input>
+        </form>
+    </div>
+</div>

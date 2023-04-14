@@ -11,10 +11,12 @@
 <div class="text-center" style="text-align:center">
     <h1>Statystyki zawodnika</h1>
     <div class="namesurname" style="text-align:center">
-        <h4>Logowanie do ID</h4>
+        <h2>Logowanie</h2>
         <form asp-page-handler="view" method="post">
-            <h4>ID</h4>
-            <input type="number" name="index" /><br />
+            <h5>Login</h5>
+            <input type="text" name="log" /><br />
+            <h5>Hasło</h5>
+            <input type="password" name="passwd" /><br />
             <input type="submit" class="myButtonn"/>
         </form>
 
@@ -22,13 +24,13 @@
     </div>
     <div class="namesurname">
         <form method="post">
-            <h4>Rejestracja</h4>
-            <h4>ID</h4>
-            <input type="number" name="index" /><br />
-            <h4>Login</h4>
-            <input type="text" name="imie" /><br />
-            <h4>Hasło</h4>
-            <input type="text" name="hasło" /><br />
+            <h2>Rejestracja</h2>
+            <h5>Imię i nazwisko</h5>
+            <input type="number" name="fullname" /><br />
+            <h5>Login</h5>
+            <input type="text" name="login" /><br />
+            <h5>Hasło</h5>
+            <input type="password" name="passwd"/><br />
             <input type="submit" class="myButtonn"></input>
         </form>
     </div>

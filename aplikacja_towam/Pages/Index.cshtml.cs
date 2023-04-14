@@ -28,24 +28,41 @@ namespace aplikacja_towam.Pages
 
         public IActionResult OnPostView()
         {
-            var idd = Request.Form["index"];
-            return LocalRedirect($"/Stats");
+            var login = Request.Form["log"];
+            var passwd = Request.Form["passwd"];
+            //SqlConnection con = new SqlConnection("Server=LAPTOP-9UMOVV12;Database=pilkarzyki;Trusted_Connection=True;");
+            //con.Open();
+            //SqlCommand cm = new SqlCommand("Select id from dbo.Uzytkownik where login like '(login)' AND password like '(passwd)'", con);
+            //cm.CommandType = CommandType.Text;
+            //SqlDataReader reader = cm.ExecuteReader();
+            //if (reader != null)
+            //{
+            //    con.Close();
+            //    return LocalRedirect($"/Stats/'(reader)'");
+            //}
+            //else
+            //{
+            //    string script = "alert('Nie prawidłowe dane.');";
+            //    return Content("<script>" + script + "</script>");
+            //}
+            return LocalRedirect($"/Stats/");
         }
 
         public IActionResult OnPost()
         {
-            var idd = Request.Form["index"];
-            var imie = Request.Form["imie"];
-            var nazwisko = Request.Form["nazwisko"];
-            SqlConnection con = new SqlConnection("Server=LAPTOP-9UMOVV12;Database=pilkarzyki;Trusted_Connection=True;");
+            var fullName = Request.Form["fullName"];
+            var login = Request.Form["login"];
+            var password = Request.Form["passwd"];
+            //SqlConnection con = new SqlConnection("Server=LAPTOP-9UMOVV12;Database=pilkarzyki;Trusted_Connection=True;");
             //con.Open();
             ////SqlCommand cm = new SqlCommand("Select * from dbo.Uzytkownik", con);
-            //SqlCommand cm = new SqlCommand($"INSERT INTO Uzytkownik(UzytkownikID, Imie, Nazwisko)\nVALUES({idd}, '{imie}', '{nazwisko}')", con);
+            //SqlCommand cm = new SqlCommand($"INSERT INTO Uzytkownik(fullName,login,password)\nVALUES({idd}, '{imie}', '{nazwisko}')", con);
             //cm.CommandType = CommandType.Text;
             //SqlDataReader reader = cm.ExecuteReader();
             //con.Close();
             //ViewData["cos"] = idd;
-            return LocalRedirect($"/zawodnik/{idd}");
+            //return LocalRedirect($"/zawodnik/{idd}");
+            return LocalRedirect($"/Stats/");
         }
     }
 }

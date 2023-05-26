@@ -18,9 +18,10 @@ namespace aplikacja_towam.Pages
         public List<Cooper> cooper { get; set; }
         public List<WyciskanieMax> wyciskanieMax { get; set; }
         public List<WyciskanieMaxIlosc> wyciskanieMaxIlosc { get; set; }
-        public int ddd { get; set; }
-        public void OnGet()
+        public int ID { get; set; }
+        public void OnGet(int id)
         {
+            this.ID = id;
             //GenerujCooper();
             //GenerujPodania();
             //GenerujStrzaly();

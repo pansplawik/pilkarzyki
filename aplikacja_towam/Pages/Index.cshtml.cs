@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using aplikacja_towam.Pages;
 using Microsoft.AspNetCore.Routing;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace aplikacja_towam.Pages
 {
@@ -53,16 +55,53 @@ namespace aplikacja_towam.Pages
             var fullName = Request.Form["fullName"];
             var login = Request.Form["login"];
             var password = Request.Form["passwd"];
-            //SqlConnection con = new SqlConnection("Server=LAPTOP-9UMOVV12;Database=pilkarzyki;Trusted_Connection=True;");
-            //con.Open();
-            ////SqlCommand cm = new SqlCommand("Select * from dbo.Uzytkownik", con);
-            //SqlCommand cm = new SqlCommand($"INSERT INTO Uzytkownik(fullName,login,password)\nVALUES({idd}, '{imie}', '{nazwisko}')", con);
-            //cm.CommandType = CommandType.Text;
-            //SqlDataReader reader = cm.ExecuteReader();
-            //con.Close();
-            //ViewData["cos"] = idd;
-            //return LocalRedirect($"/zawodnik/{idd}");
-            return LocalRedirect($"/Stats/");
+            // Połączenie z bazą danych
+            using (SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            {
+                con.Open();
+
+                // Wstawianie danych do tabeli
+                using (SqlCommand cm = new SqlCommand("INSERT INTO Uzytkownik (FullName, Username, PasswordHash) VALUES ('@FullName', '@Username', '@PasswordHash')", con))
+                {
+                    cm.Parameters.AddWithValue("@FullName", fullName);
+                    cm.Parameters.AddWithValue("@Username", login);
+                    cm.Parameters.AddWithValue("@PasswordHash", HashPassword(password));
+
+                    cm.ExecuteNonQuery();
+                }
+            }
+            int id = getId(HashPassword(password), login);
+            return LocalRedirect($"/zawodnik/{id}");
         }
+
+        // Metoda haszowania hasła (przykład - należy użyć odpowiedniej, bezpiecznej metody haszowania)
+        public string HashPassword(string password)
+        {
+            // Tutaj można zastosować odpowiednią metodę haszowania hasła, na przykład bcrypt, PBKDF2, SCrypt, etc.
+            // Przykładowo, zastosujmy prostą funkcję hashującą SHA256
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(password);
+                byte[] hash = sha256.ComputeHash(bytes);
+                return Convert.ToBase64String(hash);
+            }
+        }
+
+        public int getId(string password,string login)
+        {
+            using (SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            {
+                con.Open();
+
+                // Pobieranie ID użytkownika
+                using (SqlCommand com = new SqlCommand($"SELECT Id FROM Uzytkownik WHERE FullName like '{login}' AND PasswordHash like '{password}'", con))
+                {
+                    SqlDataReader reader = com.ExecuteReader();
+                    return reader.GetInt32(0);
+                }
+            }
+        }
+
     }
 }
+   

@@ -15,9 +15,11 @@ Aby włączyć aplikację webową wystarczy pobrać repozytorium za pomocą `git
 
 ## Co nowego w zależności od wersji z zeszłego semestru.
 
-- Lepsze zabezpieczneie danych poprzez logowanie za pomocą loginu i hasła.
+- Lepsze zabezpieczneie danych poprzez logowanie za pomocą loginu i hasła (hashowanie hasła).
+- Podłączenie bazy danych w chmurze, zastosowanie Azure
 - Lepiej dopasowane dane
 - Normalizacja drugiego stopnia bazy danych.
+- update widoku
 
 ## Trudności
 

@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace aplikacja_towam.models
 {
-    public class WyciskanieMaxIlosc
+    public class Oddechy
     {
-        public WyciskanieMaxIlosc(int id, int wartosc, int ilosc,DateTime date)
+        public Oddechy(int id, int wartosc, DateTime date)
         {
             this.id = id;
             this.wartosc = wartosc;
-            this.ilosc = ilosc;
             this.data = date;
         }
 
@@ -20,8 +19,6 @@ namespace aplikacja_towam.models
         public int id { get; set; }
         [DataMember(Name = "wartosc")]
         public int wartosc { get; set; }
-        [DataMember(Name="ile")]
-        public int ilosc { get; set; }
         [DataMember(Name = "data")]
         public DateTime data { get; set; }
     }

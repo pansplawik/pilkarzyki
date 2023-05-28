@@ -8,7 +8,7 @@ namespace aplikacja_towam.models
 {
     public class Cooper
     {
-        public Cooper(int id, decimal wartosc,DateTime date)
+        public Cooper(int id, int wartosc,DateTime date)
         {
             this.id = id;
             this.wartosc = wartosc;
@@ -18,7 +18,7 @@ namespace aplikacja_towam.models
         [DataMember(Name = "ID")]
         public int id { get; set; }
         [DataMember(Name = "wartosc")]
-        public decimal wartosc { get; set; }
+        public int wartosc { get; set; }
         [DataMember(Name = "data")]
         public DateTime data { get; set; }
     }

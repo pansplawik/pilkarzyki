@@ -24,3 +24,8 @@ Aby włączyć aplikację webową wystarczy pobrać repozytorium za pomocą `git
 ## Trudności
 
 Jako, że aplikacja ma baze danych znajdującą się lokalnie, nie można przesyałc informacji do bazy danych oraz pobierać informacji z niej poza komputerem na którym znajduje się baza danych.
+
+## Dane Testowe do logowania
+
+login: admin
+hasło: admin

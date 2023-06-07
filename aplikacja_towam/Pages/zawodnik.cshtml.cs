@@ -29,9 +29,9 @@ namespace aplikacja_towam.Pages
         }
         public List<Strzaly> GenerujStrzaly()
         {
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
-            SqlCommand cm = new SqlCommand($"select DataAktywnosci,Wartosc from Wynik where Typ='Strzaly' and Id=43", con);
+            SqlCommand cm = new SqlCommand($"select DataAktywnosci,Wartosc from Wynik where Typ='Strzaly' and Id=43 order by DataAktywnosci", con);
             cm.CommandType = CommandType.Text;
             SqlDataReader reader = cm.ExecuteReader();
             List<Strzaly> s = new List<Strzaly>();
@@ -61,9 +61,9 @@ namespace aplikacja_towam.Pages
         }
         public List<Podania> GenerujPodania()
         {
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
-            SqlCommand cm = new SqlCommand($"select DataAktywnosci,Wartosc from Wynik where Typ='podania' and Id=43", con);
+            SqlCommand cm = new SqlCommand($"select DataAktywnosci,Wartosc from Wynik where Typ='podania' and Id=43 order by DataAktywnosci", con);
             cm.CommandType = CommandType.Text;
             SqlDataReader reader = cm.ExecuteReader();
             List<Podania> s = new List<Podania>();
@@ -91,9 +91,9 @@ namespace aplikacja_towam.Pages
         }
         public List<Cooper> GenerujDystans()
         {
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
-            SqlCommand cm = new SqlCommand($"select DataAktywnosci,Wartosc from Wynik where Typ='Dystans' and Id=43", con);
+            SqlCommand cm = new SqlCommand($"select DataAktywnosci,Wartosc from Wynik where Typ='Dystans' and Id=43 order by DataAktywnosci ", con);
             cm.CommandType = CommandType.Text;
             SqlDataReader reader = cm.ExecuteReader();
             List<Cooper> s = new List<Cooper>();
@@ -111,7 +111,7 @@ namespace aplikacja_towam.Pages
             double srednia = 0;
             if (s.Count>0)
             {
-max = s.Max(x => x.wartosc);
+            max = s.Max(x => x.wartosc);
             ile = s.Count(x => x.wartosc == max);
              srednia = s.Average(x => x.wartosc);
             }
@@ -121,9 +121,9 @@ max = s.Max(x => x.wartosc);
         }
         public List<Oddechy> GenerujOddechy()
         {
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
-            SqlCommand cm = new SqlCommand($"select DataAktywnosci,Wartosc from Wynik where Typ='Oddechy' and Id=43", con);
+            SqlCommand cm = new SqlCommand($"select DataAktywnosci,Wartosc from Wynik where Typ='Oddechy' and Id=43 order by DataAktywnosci", con);
             cm.CommandType = CommandType.Text;
             SqlDataReader reader = cm.ExecuteReader();
             List<Oddechy> s = new List<Oddechy>();
@@ -152,44 +152,44 @@ max = s.Max(x => x.wartosc);
 
         public IActionResult OnPostCooper()
         {
-            var value = Request.Form["wartosc"];
+            int value = int.Parse(Request.Form["value"]);
             string data = DateTime.Now.ToString("yyyy-MM-dd");
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
-            SqlCommand cm = new SqlCommand($"insert into Wynik(Typ,DataAktywnosci,Wartosc,Id)values('Dystans','{data}',5,43)", con);
+            SqlCommand cm = new SqlCommand($"insert into Wynik(Typ,DataAktywnosci,Wartosc,Id)values('Dystans','{data}',{value},43)", con);
             cm.CommandType = CommandType.Text;
             cm.ExecuteReader();
             return RedirectToPage();
         }
         public IActionResult OnPostPodania()
         {
-            var value = Request.Form["wartosc"];
+            int value = int.Parse(Request.Form["podania"]);
             string data = DateTime.Now.ToString("yyyy-MM-dd");
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
-            SqlCommand cm = new SqlCommand($"insert into Wynik(Typ,DataAktywnosci,Wartosc,Id)values('Podania','{data}',5,43)", con);
+            SqlCommand cm = new SqlCommand($"insert into Wynik(Typ,DataAktywnosci,Wartosc,Id)values('Podania','{data}',{value},43)", con);
             cm.CommandType = CommandType.Text;
             cm.ExecuteReader();
             return RedirectToPage();
         }
         public IActionResult OnPostStrzaly()
         {
-            var value = Request.Form["wartosc"];
+            int value = int.Parse(Request.Form["procentstrzalow"]);
             string data = DateTime.Now.ToString("yyyy-MM-dd");
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
-            SqlCommand cm = new SqlCommand($"insert into Wynik(Typ,DataAktywnosci,Wartosc,Id)values('Strzaly','{data}',5,43)", con);
+            SqlCommand cm = new SqlCommand($"insert into Wynik(Typ,DataAktywnosci,Wartosc,Id)values('Strzaly','{data}',{value},43)", con);
             cm.CommandType = CommandType.Text;
             cm.ExecuteReader();
             return RedirectToPage();
         }
-        public IActionResult OnPostOddech()
+        public IActionResult OnPostOddechy()
         {
-            var value = Request.Form["wartosc"];
+            int value = int.Parse(Request.Form["ile"]);
             string data = DateTime.Now.ToString("yyyy-MM-dd");
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
-            SqlCommand cm = new SqlCommand($"insert into Wynik(Typ,DataAktywnosci,Wartosc,Id)values('Oddech','{data}',5,43)", con);
+            SqlCommand cm = new SqlCommand($"insert into Wynik(Typ,DataAktywnosci,Wartosc,Id)values('Oddechy','{data}',{value},43)", con);
             cm.CommandType = CommandType.Text;
             cm.ExecuteReader();
             return RedirectToPage();

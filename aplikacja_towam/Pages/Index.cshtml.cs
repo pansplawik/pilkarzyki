@@ -34,7 +34,7 @@ namespace aplikacja_towam.Pages
             var login = Request.Form["log"];
             var passwd = Request.Form["passwd"];
             Console.WriteLine(HashPassword(passwd));
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
             SqlCommand cm = new SqlCommand($"SELECT Id FROM Uzytkownik WHERE Username LIKE '{login}' AND PasswordHash LIKE '{HashPassword(passwd)}'", con);
             cm.CommandType = CommandType.Text;
@@ -59,7 +59,7 @@ namespace aplikacja_towam.Pages
             var login = Request.Form["login"];
             var password = Request.Form["passwd"];
             // Połączenie z bazą danych
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
             SqlCommand cm = new SqlCommand($"INSERT INTO Uzytkownik (FullName, Username, PasswordHash) VALUES ('{fullName}', '{login}', '{HashPassword(password)}')", con);
             cm.CommandType = CommandType.Text;
@@ -84,7 +84,7 @@ namespace aplikacja_towam.Pages
 
         public int getId(string password,string login)
         {
-            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=***;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            SqlConnection con = new SqlConnection("Data Source=kamilsplawinski.database.windows.net;Initial Catalog=pazig;User ID=pansplawik;Password=Splawikop1.;Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             con.Open();
             SqlCommand cm = new SqlCommand($"SELECT Id FROM Uzytkownik WHERE Username LIKE '{login}' AND PasswordHash LIKE '{HashPassword("admin")}'", con);
             cm.CommandType = CommandType.Text;

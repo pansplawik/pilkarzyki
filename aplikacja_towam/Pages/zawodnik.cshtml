@@ -4,6 +4,9 @@
 
 <div class="namesurname" style="text-align:center ">
     <h1>Dziennik Aktywności </h1>
+    <h2>Admin admin </h2>
+    <h2>Wiek: 16 lat</h2>
+    <h3>Pozycja: Pomocnik</h3>
 </div>
 
 <div class="namesurname" style="text-align:center">
@@ -27,15 +30,59 @@
                 {
                     if (item != null)
                     {
-                          <tr>
-                        <td>@item.data.Day:@item.data.Month:@item.data.Year</td>
-                        <td>@item.wartosc</td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @{
+                                    string day = item.data.Day.ToString("00");
+                                    string month = item.data.Month.ToString("00");
+                                    string date = $"{day}:{month}:{item.data.Year}";
+                                }
+                                @date
+                            </td>
+                            <td>@item.wartosc</td>
+                       </tr>
                     }
                 }
             </tbody>
         </table>
     </div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        // Pobierz dane z listy C#
+        @{
+            var selectedData = Model.podania.Select(p => new { data = p.data, wartosc = p.wartosc }).ToList();
+        }
+        var podaniaData = @Html.Raw(Json.Serialize(selectedData));
+
+
+        // Utwórz tablicę danych w formacie akceptowanym przez Google Charts
+        var chart_test_data = [['Data', 'Maksymalne wartości', 'Średnie wartości']];
+        for (var i = 0; i < podaniaData.length; i++) {
+            var item = podaniaData[i];
+            var formattedDate = item.data.substring(0, 7);
+            chart_test_data.push([formattedDate, item.wartosc, item.wartosc]);
+        }
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'Data');
+            data.addColumn('number', 'Maksymalne wartości');
+
+            for (var i = 0; i < chart_test_data.length; i++) {
+                var tmpArray = chart_test_data[i][0].split("-");
+                var date = new Date(parseInt(tmpArray[0]), parseInt(tmpArray[1]) - 1);
+                data.addRow([date, parseInt(chart_test_data[i][1]));
+            }
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+            chart.draw(data);
+        }
+
+        google.charts.load('current', { packages: ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+    </script>
+
+    <div id="chart" style="width: 100%; height: 400px;"></div>
     <div>
         <br />
         <div>
@@ -44,7 +91,6 @@
     </div>
 
 </div>
-
 
 <div class="namesurname" style="text-align:center">
     <h3>Skuteczność strzałów</h3>
@@ -60,16 +106,23 @@
         <thead>
             <tr>
                 <th>Data</th>
-                <th>Dystans [km]</th>
+                <th>Skuteczność [%]</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.strzaly)
             {
-                <tr>
-                    <td>@item.data.Day:@item.data.Month:@item.data.Year</td>
-                    <td>@item.wartosc</td>
-                </tr>
+                    <tr>
+                        <td>
+                            @{
+                                string day = item.data.Day.ToString("00");
+                                string month = item.data.Month.ToString("00");
+                                string date = $"{day}:{month}:{item.data.Year}";
+                            }
+                            @date
+                        </td>
+                        <td>@item.wartosc</td>
+                    </tr>
             }
         </tbody>
     </table>
@@ -81,10 +134,10 @@
 </div>
 
 <div class="namesurname" style="text-align:center">
-    <form asp-page-handler="sztangamaxile" method="post" asp-antiforgery="true">
+    <form asp-page-handler="podania" method="post" asp-antiforgery="true">
         <h3>Skuteczność podań</h3>
         <h3> Jaka skuteczność [%]</h3>
-        <input type="number" name="maxilekg" style="margin-top:5px" />
+        <input type="number" name="podania" style="margin-top:5px" />
         <br/>
         <input type="date" id="start" name="trip-start" value=@ViewData["aktualna"] style="margin-top:10px;margin-bottom:6px"> <br />
         <input type="submit" class="myButtonn" value="wgraj dane" />
@@ -95,14 +148,21 @@
             <thead>
                 <tr>
                     <th>Data</th>
-                    <th>Dystans [km]</th>
+                    <th>Skuteczność [%]</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.podania)
                 {
                     <tr>
-                        <td>@item.data.Day:@item.data.Month:@item.data.Year</td>
+                        <td>
+                            @{
+                                string day = item.data.Day.ToString("00");
+                                string month = item.data.Month.ToString("00");
+                                string date = $"{day}:{month}:{item.data.Year}";
+                            }
+                            @date
+                        </td>
                         <td>@item.wartosc</td>
                     </tr>
                 }
@@ -113,10 +173,10 @@
 </div>
 
 <div class="namesurname" style="text-align:center">
-    <form asp-page-handler="sztangamaxile" method="post" asp-antiforgery="true">
+    <form asp-page-handler="oddechy" method="post" asp-antiforgery="true">
         <h3>Liczba oddechów</h3>
         <h3> Ile [liczba]</h3>
-        <input type="number" name="maxilekg" style="margin-top:5px" />
+        <input type="number" name="ile" style="margin-top:5px" />
         <br />
         <input type="date" id="start" name="trip-start" value=@ViewData["aktualna"] style="margin-top:10px;margin-bottom:6px"> <br />
         <input type="submit" class="myButtonn" value="wgraj dane" />
@@ -127,18 +187,26 @@
         <thead>
             <tr>
                 <th>Data</th>
-                <th>Dystans [km]</th>
+                <th>Liczba oddechów [ilość]</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var item in Model.oddechy)
-            {
-                <tr>
-                    <td>@item.data.Day:@item.data.Month:@item.data.Year</td>
-                    <td>@item.wartosc</td>
-                </tr>
-            }
-        </tbody>
+            <tbody>
+                @foreach (var item in Model.oddechy)
+                {
+                    <tr>
+                        <td>
+                            @{
+                                string day = item.data.Day.ToString("00");
+                                string month = item.data.Month.ToString("00");
+                                string date = $"{day}:{month}:{item.data.Year}";
+                            }
+                            @date
+                        </td>
+                        <td>@item.wartosc</td>
+                    </tr>
+                }
+            </tbody>
+
     </table>
     </div>
     <h4>@ViewData["OddechyStatystyki"]</h4>

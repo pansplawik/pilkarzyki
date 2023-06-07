@@ -97,17 +97,18 @@ body {
 
 .statsView {
     margin-top: 30px;
-    margin-left:50px;
-    margin-right:50px;
-    margin-bottom:20px;
+    margin-left: 220px;
+    margin-right: 220px;
+    margin-bottom: 20px;
     border: 2px solid black;
     padding: 10px;
-    background-color:azure;
+    background-color: azure;
+    height: 400px;
+    overflow: auto;
 }
 .statsView table {
         margin: 0 auto;
     }
-
 .statsView th, .statsView td {
         font-size: 28px;
         text-align: center;

@@ -4,13 +4,14 @@
 
 <div class="namesurname" style="text-align:center ">
     <h1>Dziennik Aktywności </h1>
-    <h2>Admin admin </h2>
-    <h2>Wiek: 16 lat</h2>
+    <h2>Jan Nowak </h2>
+    <h2>Wiek: 20 lat</h2>
     <h3>Pozycja: Pomocnik</h3>
 </div>
 
 <div class="namesurname" style="text-align:center">
     <h3>Test coopera</h3>
+    <h5>Test biegowy polegający na jak najszybszym biegu w ciągu 12 minut. Dystans w tabeli oraz na wykresie zaokrąglany do części jedności.</h5>
     <form asp-page-handler="cooper" method="post">
         <h3 id="as"> Dystans (km)</h3>
         <input type="number" name="value" style="margin-top:5px;margin-bottom:8px" /><br />
@@ -18,82 +19,111 @@
         <input type="submit" class="myButtonn" value="wgraj dane" /><br />
     </form>
     <div class="statsView">
-        <table>
-            <thead>
-                <tr>
-                    <th style="padding-right:10px">Data</th>
-                    <th>Dystans [km]</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div id="tableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="padding-right:10px">Data</th>
+                        <th>Dystans [km]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.cooper)
+                    {
+                        if (item != null)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        string day = item.data.Day.ToString("00");
+                                        string month = item.data.Month.ToString("00");
+                                        string date = $"{day}:{month}:{item.data.Year}";
+                                    }
+                                    @date
+                                </td>
+                                <td>@item.wartosc</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div id="chartContainer" style="display: none;">
+            <div id="chartCooper" style="width: 900px; height: 500px; text-align: center;"></div>
+            <script type="text/javascript">
+                google.charts.load('current', { packages: ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Data');
+                    data.addColumn('number', 'Wartość');
+
+                    data.addRows([
                 @foreach (var item in Model.cooper)
                 {
                     if (item != null)
                     {
-                        <tr>
-                            <td>
-                                @{
-                                    string day = item.data.Day.ToString("00");
-                                    string month = item.data.Month.ToString("00");
-                                    string date = $"{day}:{month}:{item.data.Year}";
-                                }
-                                @date
-                            </td>
-                            <td>@item.wartosc</td>
-                       </tr>
+                        <text>['@item.data', @item.wartosc], </text>
                     }
                 }
-            </tbody>
-        </table>
+                                ]);
+
+                    var options = {
+                        curveType: 'function',
+                        width: 900,
+                        height: 500,
+                        vAxis: {
+                            title: 'Dystans [km]'
+                        },
+                        hAxis: {
+                            title: 'Data'
+                        }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('chartCooper'));
+                    chart.draw(data, options);
+                }
+            </script>
+        </div>
+
     </div>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-        // Pobierz dane z listy C#
-        @{
-            var selectedData = Model.podania.Select(p => new { data = p.data, wartosc = p.wartosc }).ToList();
-        }
-        var podaniaData = @Html.Raw(Json.Serialize(selectedData));
+    <div>
+        <label for="switchView">Przełącz widok:</label>
+        <select id="switchView" onchange="toggleView()">
+            <option value="tabela">Tabela</option>
+            <option value="wykres">Wykres</option>
+        </select>
+    </div>
 
+    <script type="text/javascript">
+        function toggleView() {
+            var tableContainer = document.getElementById('tableContainer');
+            var chartContainer = document.getElementById('chartContainer');
+            var switchView = document.getElementById('switchView');
 
-        // Utwórz tablicę danych w formacie akceptowanym przez Google Charts
-        var chart_test_data = [['Data', 'Maksymalne wartości', 'Średnie wartości']];
-        for (var i = 0; i < podaniaData.length; i++) {
-            var item = podaniaData[i];
-            var formattedDate = item.data.substring(0, 7);
-            chart_test_data.push([formattedDate, item.wartosc, item.wartosc]);
-        }
-
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('date', 'Data');
-            data.addColumn('number', 'Maksymalne wartości');
-
-            for (var i = 0; i < chart_test_data.length; i++) {
-                var tmpArray = chart_test_data[i][0].split("-");
-                var date = new Date(parseInt(tmpArray[0]), parseInt(tmpArray[1]) - 1);
-                data.addRow([date, parseInt(chart_test_data[i][1]));
+            if (switchView.value === 'tabela') {
+                tableContainer.style.display = 'block';
+                chartContainer.style.display = 'none';
+            } else if (switchView.value === 'wykres') {
+                tableContainer.style.display = 'none';
+                chartContainer.style.display = 'block';
+                google.charts.setOnLoadCallback(drawChart);
             }
-            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-
-            chart.draw(data);
         }
-
-        google.charts.load('current', { packages: ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
     </script>
-
-    <div id="chart" style="width: 100%; height: 400px;"></div>
     <div>
         <br />
         <div>
              <h4>@ViewData["CooperStatystyki"]</h4>
         </div>    
     </div>
-
 </div>
 
 <div class="namesurname" style="text-align:center">
     <h3>Skuteczność strzałów</h3>
+    <h5>Test strzelecki polegający na sprawdzanie ilości skutecznych strzałów na bramkę. Wynik obliczany za pomocą wzoru: liczbaCelnych/liczbaStrzałów*100.</h5>
     <form asp-page-handler="strzaly" method="post" asp-antiforgery="true">
         <h3> Jaka skuteczność [%]</h3>
         <input type="number" name="procentstrzalow" style="margin-top:5px" />    <br />
@@ -101,32 +131,100 @@
         <input type="submit" class="myButtonn" value="wgraj dane" />
     </form>
     <br/>
-       <div class="statsView">
-       <table>
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Skuteczność [%]</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.strzaly)
-            {
+    <div class="statsView">
+        <div id="tableContainerStrzaly">
+            <table>
+                <thead>
                     <tr>
-                        <td>
-                            @{
-                                string day = item.data.Day.ToString("00");
-                                string month = item.data.Month.ToString("00");
-                                string date = $"{day}:{month}:{item.data.Year}";
-                            }
-                            @date
-                        </td>
-                        <td>@item.wartosc</td>
+                        <th style="padding-right:10px">Data</th>
+                        <th>Dystans [km]</th>
                     </tr>
-            }
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.strzaly)
+                    {
+                        if (item != null)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        string day = item.data.Day.ToString("00");
+                                        string month = item.data.Month.ToString("00");
+                                        string date = $"{day}:{month}:{item.data.Year}";
+                                    }
+                                    @date
+                                </td>
+                                <td>@item.wartosc</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div id="chartContainerStrzaly" style="display: none;">
+            <div id="chartStrzaly" style="width: 900px; height: 500px; text-align: center;"></div>
+            <script type="text/javascript">
+                google.charts.load('current', { packages: ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Data');
+                    data.addColumn('number', 'Wartość');
+
+                    data.addRows([
+                @foreach (var item in Model.strzaly)
+                {
+                    if (item != null)
+                    {
+                        <text>['@item.data', @item.wartosc], </text>
+                    }
+                }
+                                                ]);
+
+                    var options = {
+                        curveType: 'function',
+                        width: 900,
+                        height: 500,
+                        vAxis: {
+                            title: 'Skutecnzość [%]'
+                        },
+                        hAxis: {
+                            title: 'Data'
+                        }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('chartStrzaly'));
+                    chart.draw(data, options);
+                }
+            </script>
+        </div>
     </div>
+    <div>
+        <label for="switchView">Przełącz widok:</label>
+        <select id="switchViewStrzaly" onchange="toggleViewStrzaly()">
+            <option value="tabela">Tabela</option>
+            <option value="wykres">Wykres</option>
+        </select>
+    </div>
+
+    <script type="text/javascript">
+        function toggleViewStrzaly() {
+            var tableContainer = document.getElementById('tableContainerStrzaly');
+            var chartContainer = document.getElementById('chartContainerStrzaly');
+            var switchView = document.getElementById('switchViewStrzaly');
+
+            if (switchView.value === 'tabela') {
+                tableContainer.style.display = 'block';
+                chartContainer.style.display = 'none';
+            } else if (switchView.value === 'wykres') {
+                tableContainer.style.display = 'none';
+                chartContainer.style.display = 'block';
+                google.charts.setOnLoadCallback(drawChart);
+            }
+        }
+    </script>
     <div>
         <h4>@ViewData["StrzalyStatystyki"]</h4>
     </div>
@@ -136,6 +234,7 @@
 <div class="namesurname" style="text-align:center">
     <form asp-page-handler="podania" method="post" asp-antiforgery="true">
         <h3>Skuteczność podań</h3>
+        <h5>Test polegajćy na zliczeniu ilości celnych podań w trakcie gry wewnętrznej lub treningu specjalistycznego. Wynik obliczany wzorem: liczbaCelnych/liczbaPodań*100.</h5>
         <h3> Jaka skuteczność [%]</h3>
         <input type="number" name="podania" style="margin-top:5px" />
         <br/>
@@ -144,37 +243,107 @@
     </form>
     <br />
     <div class="statsView">
-        <table>
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Skuteczność [%]</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div id="tableContainerPodania">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="padding-right:10px">Data</th>
+                        <th>Dystans [km]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.podania)
+                    {
+                        if (item != null)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        string day = item.data.Day.ToString("00");
+                                        string month = item.data.Month.ToString("00");
+                                        string date = $"{day}:{month}:{item.data.Year}";
+                                    }
+                                    @date
+                                </td>
+                                <td>@item.wartosc</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div id="chartContainerPodania" style="display: none;">
+            <div id="chartPodania" style="width: 900px; height: 500px; text-align: center;"></div>
+            <script type="text/javascript">
+                google.charts.load('current', { packages: ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Data');
+                    data.addColumn('number', 'Wartość');
+
+                    data.addRows([
                 @foreach (var item in Model.podania)
                 {
-                    <tr>
-                        <td>
-                            @{
-                                string day = item.data.Day.ToString("00");
-                                string month = item.data.Month.ToString("00");
-                                string date = $"{day}:{month}:{item.data.Year}";
-                            }
-                            @date
-                        </td>
-                        <td>@item.wartosc</td>
-                    </tr>
+                    if (item != null)
+                    {
+                        <text>['@item.data', @item.wartosc], </text>
+                    }
                 }
-            </tbody>
-        </table>
+                                                                ]);
+
+                    var options = {
+                        title: 'Statystyki podań',
+                        curveType: 'function',
+                        width: 900,
+                        height: 500,
+                        vAxis: {
+                            title: 'Skuteczność [%]'
+                        },
+                        hAxis: {
+                            title: 'Data'
+                        }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('chartPodania'));
+                    chart.draw(data, options);
+                }
+            </script>
+        </div>
     </div>
+    <div>
+        <label for="switchView">Przełącz widok:</label>
+        <select id="switchViewPodania" onchange="toggleViewPodania()">
+            <option value="tabela">Tabela</option>
+            <option value="wykres">Wykres</option>
+        </select>
+    </div>
+
+    <script type="text/javascript">
+        function toggleViewPodania() {
+            var tableContainer = document.getElementById('tableContainerPodania');
+            var chartContainer = document.getElementById('chartContainerPodania');
+            var switchView = document.getElementById('switchViewPodania');
+
+            if (switchView.value === 'tabela') {
+                tableContainer.style.display = 'block';
+                chartContainer.style.display = 'none';
+            } else if (switchView.value === 'wykres') {
+                tableContainer.style.display = 'none';
+                chartContainer.style.display = 'block';
+                google.charts.setOnLoadCallback(drawChart);
+            }
+        }
+    </script>
     <h4>@ViewData["PodaniaStatystyki"]</h4>
 </div>
 
 <div class="namesurname" style="text-align:center">
     <form asp-page-handler="oddechy" method="post" asp-antiforgery="true">
         <h3>Liczba oddechów</h3>
+        <h5>Test wydolnościowy polegający na mierzenie liczby oddechów na dystansie 1km na bieżni stojącej, biegnąc predkością połowy sprintu.</h5>
         <h3> Ile [liczba]</h3>
         <input type="number" name="ile" style="margin-top:5px" />
         <br />
@@ -183,31 +352,98 @@
     </form>
     <br />
     <div class="statsView">
-       <table>
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Liczba oddechów [ilość]</th>
-            </tr>
-        </thead>
-            <tbody>
+        <div id="tableContainerOddechy">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="padding-right:10px">Data</th>
+                        <th>Liczba [ilość]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.oddechy)
+                    {
+                        if (item != null)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        string day = item.data.Day.ToString("00");
+                                        string month = item.data.Month.ToString("00");
+                                        string date = $"{day}:{month}:{item.data.Year}";
+                                    }
+                                    @date
+                                </td>
+                                <td>@item.wartosc</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div id="chartContainerOddechy" style="display: none;">
+            <div id="chartOddechy" style="width: 900px; height: 500px; text-align: center;"></div>
+            <script type="text/javascript">
+                google.charts.load('current', { packages: ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Data');
+                    data.addColumn('number', 'Wartość');
+
+                    data.addRows([
                 @foreach (var item in Model.oddechy)
                 {
-                    <tr>
-                        <td>
-                            @{
-                                string day = item.data.Day.ToString("00");
-                                string month = item.data.Month.ToString("00");
-                                string date = $"{day}:{month}:{item.data.Year}";
-                            }
-                            @date
-                        </td>
-                        <td>@item.wartosc</td>
-                    </tr>
+                    if (item != null)
+                    {
+                        <text>['@item.data', @item.wartosc], </text>
+                    }
                 }
-            </tbody>
+                                                                                ]);
 
-    </table>
+                    var options = {
+                        title: 'Statystyki podań',
+                        curveType: 'function',
+                        width: 900,
+                        height: 500,
+                        vAxis: {
+                            title: 'Oddechy [ilość]'
+                        },
+                        hAxis: {
+                            title: 'Data'
+                        }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('chartOddechy'));
+                    chart.draw(data, options);
+                }
+            </script>
+        </div>
+    </div>
+    <div>
+        <label for="switchView" style="font-size:medium">Przełącz widok:</label>
+        <select id="switchViewOddechy" onchange="toggleViewOddechy()">
+            <option value="tabela">Tabela</option>
+            <option value="wykres">Wykres</option>
+        </select>
+        <script type="text/javascript">
+            function toggleViewOddechy() {
+                var tableContainer = document.getElementById('tableContainerOddechy');
+                var chartContainer = document.getElementById('chartContainerOddechy');
+                var switchView = document.getElementById('switchViewOddechy');
+
+                if (switchView.value === 'tabela') {
+                    tableContainer.style.display = 'block';
+                    chartContainer.style.display = 'none';
+                } else if (switchView.value === 'wykres') {
+                    tableContainer.style.display = 'none';
+                    chartContainer.style.display = 'block';
+                    google.charts.setOnLoadCallback(drawChart);
+                }
+            }
+        </script>
     </div>
     <h4>@ViewData["OddechyStatystyki"]</h4>
 </div>
